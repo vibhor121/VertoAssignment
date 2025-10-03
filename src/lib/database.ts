@@ -1,7 +1,11 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 
-const dbPath = path.join(process.cwd(), 'quiz.db');
+// Use in-memory database for Vercel deployment to avoid readonly issues
+const dbPath = process.env.NODE_ENV === 'production' 
+  ? ':memory:' 
+  : path.join(process.cwd(), 'quiz.db');
+
 const db = new Database(dbPath);
 
 // Create questions table
@@ -332,16 +336,18 @@ const questions = [
   }
 ];
 
-// Clear existing questions and insert new 50 questions
-db.prepare('DELETE FROM questions').run();
+// Initialize questions - only insert if table is empty
+const count = db.prepare('SELECT COUNT(*) as count FROM questions').get() as { count: number };
 
-const insertQuestion = db.prepare(`
-  INSERT INTO questions (text, options, correct_option)
-  VALUES (?, ?, ?)
-`);
+if (count.count === 0) {
+  const insertQuestion = db.prepare(`
+    INSERT INTO questions (text, options, correct_option)
+    VALUES (?, ?, ?)
+  `);
 
-questions.forEach(question => {
-  insertQuestion.run(question.text, JSON.stringify(question.options), question.correct_option);
-});
+  questions.forEach(question => {
+    insertQuestion.run(question.text, JSON.stringify(question.options), question.correct_option);
+  });
+}
 
 export default db;
