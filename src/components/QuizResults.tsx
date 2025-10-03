@@ -41,18 +41,13 @@ export default function QuizResults() {
         {/* Results Header */}
         <div className="bg-white rounded-lg shadow-md p-8 mb-6 text-center">
           <div className="mb-6">
-            <div className={`w-20 h-20 rounded-full ${getScoreBgColor(percentage)} flex items-center justify-center mx-auto mb-4`}>
-              <span className={`text-3xl font-bold ${getScoreColor(percentage)}`}>
-                {percentage}%
-              </span>
-            </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Quiz Complete!</h1>
             <p className={`text-lg ${getScoreColor(percentage)} font-semibold`}>
               {getScoreMessage(percentage)}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div className="bg-gray-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-gray-900">{score}</div>
               <div className="text-sm text-gray-600">Correct Answers</div>
@@ -60,10 +55,6 @@ export default function QuizResults() {
             <div className="bg-gray-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-gray-900">{totalQuestions - score}</div>
               <div className="text-sm text-gray-600">Incorrect Answers</div>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-gray-900">{totalQuestions}</div>
-              <div className="text-sm text-gray-600">Total Questions</div>
             </div>
           </div>
 

@@ -9,10 +9,15 @@ interface DbQuestion {
 
 export async function GET() {
   try {
-    const questions = db.prepare('SELECT id, text, options FROM questions ORDER BY id').all() as DbQuestion[];
+    // Get all questions from database
+    const allQuestions = db.prepare('SELECT id, text, options FROM questions').all() as DbQuestion[];
+    
+    // Randomly select 5 questions
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+    const selectedQuestions = shuffled.slice(0, 5);
     
     // Parse options JSON and remove correct answers for security
-    const questionsWithoutAnswers = questions.map((q) => ({
+    const questionsWithoutAnswers = selectedQuestions.map((q) => ({
       id: q.id,
       text: q.text,
       options: JSON.parse(q.options)
