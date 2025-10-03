@@ -6,10 +6,10 @@ interface Answer {
   selectedOption: number;
 }
 
-interface Question {
+interface DbQuestion {
   id: number;
   text: string;
-  options: string[];
+  options: string;
   correct_option: number;
 }
 
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const { answers }: { answers: Answer[] } = await request.json();
     
     // Get all questions with correct answers
-    const questions = db.prepare('SELECT * FROM questions ORDER BY id').all() as Question[];
+    const questions = db.prepare('SELECT * FROM questions ORDER BY id').all() as DbQuestion[];
     
     let score = 0;
     const results = answers.map(answer => {
