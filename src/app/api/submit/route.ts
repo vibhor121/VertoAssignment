@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       };
     });
     
-    const totalQuestions = questions.length;
+    const totalQuestions = answers.length; // Only count the questions that were actually asked
     const percentage = Math.round((score / totalQuestions) * 100);
     
     return NextResponse.json({
